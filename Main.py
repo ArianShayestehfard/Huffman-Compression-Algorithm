@@ -11,3 +11,21 @@ class Node:
         self.right = right
     def __lt__(self, other):
         return self.freq < other.freq
+def build_tree(text):
+    heap = [Node(c, f) for c, f in Counter(text).items()]
+    heapq.heapify(heap)
+    while len(heap) > 1:
+        l = heapq.heappop(heap)
+        r = heapq.heappop(heap)
+        heapq.heappush(heap, Node(freq=l.freq+r.freq, left=l, right=r))
+    return heap[0]
+
+def get_codes(root, code='', codes=None):
+    if codes is None:
+        codes = {}
+    if root.char is not None:
+        codes[root.char] = code
+    else:
+        get_codes(root.left, code+'0', codes)
+        get_codes(root.right, code+'1', codes)
+    return codes

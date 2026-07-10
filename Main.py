@@ -59,7 +59,7 @@ def decompress(inp, out):
     with open(out, 'w') as f:
         f.write(''.join(res))
 
-path = r"C:\Users\user\Documents\Arian"
+path = r"C:\Users\user\Documents"
 os.makedirs(path, exist_ok=True)
 
 with open(os.path.join(path, 'test.txt'), 'w') as f:
@@ -67,5 +67,3 @@ with open(os.path.join(path, 'test.txt'), 'w') as f:
 
 compress(os.path.join(path, 'test.txt'), os.path.join(path, 'test.huf'))
 decompress(os.path.join(path, 'test.huf'), os.path.join(path, 'out.txt'))
-
-print("Files created in:", path)

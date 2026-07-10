@@ -29,3 +29,16 @@ def get_codes(root, code='', codes=None):
         get_codes(root.left, code+'0', codes)
         get_codes(root.right, code+'1', codes)
     return codes
+
+def compress(inp, out):
+    with open(inp, 'r') as f:
+        text = f.read()
+    root = build_tree(text)
+    codes = get_codes(root)
+    bits = ''.join(codes[c] for c in text)
+    pad = (8 - len(bits) % 8) % 8
+    bits += '0' * pad
+    data = bytearray(int(bits[i:i+8], 2) for i in range(0, len(bits), 8))
+    with open(out, 'wb') as f:
+        pickle.dump((root, pad), f)
+        f.write(data)

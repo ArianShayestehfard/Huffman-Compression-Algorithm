@@ -42,3 +42,30 @@ def compress(inp, out):
     with open(out, 'wb') as f:
         pickle.dump((root, pad), f)
         f.write(data)
+
+def decompress(inp, out):
+    with open(inp, 'rb') as f:
+        root, pad = pickle.load(f)
+        data = f.read()
+    bits = ''.join(bin(b)[2:].zfill(8) for b in data)
+    bits = bits[:-pad] if pad else bits
+    res = []
+    node = root
+    for b in bits:
+        node = node.left if b == '0' else node.right
+        if node.char:
+            res.append(node.char)
+            node = root
+    with open(out, 'w') as f:
+        f.write(''.join(res))
+
+path = r"C:\Users\user\Documents\Arian"
+os.makedirs(path, exist_ok=True)
+
+with open(os.path.join(path, 'test.txt'), 'w') as f:
+    f.write('hello world')
+
+compress(os.path.join(path, 'test.txt'), os.path.join(path, 'test.huf'))
+decompress(os.path.join(path, 'test.huf'), os.path.join(path, 'out.txt'))
+
+print("Files created in:", path)
